@@ -1,0 +1,220 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#080b11">
+<title>Mercedes Digital Cockpit</title>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+<style>
+* { box-sizing:border-box; }
+body {
+  margin:0;
+  background:#080b11;
+  color:#f5f7fc;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+header {
+  padding:24px 22px 12px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.brand { font-size:17px; font-weight:700; letter-spacing:2px; }
+.subtitle { color:#78869a; font-size:10px; letter-spacing:2px; margin-top:4px; }
+.status { color:#3995ff; font-size:12px; }
+main { padding:10px 16px 105px; }
+.section { margin-bottom:18px; }
+.section-title {
+  font-size:12px; color:#8b9bb0;
+  letter-spacing:1.5px; margin:0 0 10px 4px;
+  text-transform:uppercase;
+}
+.card {
+  background:linear-gradient(145deg,#171e29,#10151e);
+  border:1px solid #273142;
+  border-radius:20px;
+  overflow:hidden;
+}
+#map { height:290px; width:100%; background:#172231; }
+.map-actions { padding:12px; display:flex; gap:10px; }
+button {
+  border:0; border-radius:12px; padding:13px;
+  background:#1678ed; color:white;
+  font-size:14px; font-weight:600;
+}
+.map-actions button { flex:1; }
+.music { padding:16px; }
+.music-top { display:flex; align-items:center; gap:14px; }
+.cover {
+  width:78px; height:78px; flex-shrink:0;
+  border-radius:13px;
+  background:linear-gradient(140deg,#163b70,#1b1c35 55%,#ec7b81);
+  display:grid; place-items:center; font-size:32px;
+}
+.track { font-size:17px; font-weight:700; }
+.artist { font-size:13px; color:#98a5b6; margin-top:5px; }
+.progress { height:4px; background:#394351; margin:18px 0 8px; border-radius:5px; }
+.progress span { display:block; width:0; height:100%; background:#2589ff; }
+.controls { display:flex; justify-content:center; gap:28px; padding:12px; }
+.controls button { background:#202b3b; min-width:48px; }
+.car-area {
+  min-height:210px; display:grid; place-items:center;
+  background:radial-gradient(ellipse,#263c54 0%,#121b29 48%,#10151e 75%);
+  padding:20px;
+}
+.car-area svg { width:100%; max-width:420px; }
+.car-label { text-align:center; padding:0 12px 18px; color:#a7b5c7; font-size:12px; }
+.nav {
+  position:fixed; bottom:0; left:0; right:0;
+  display:flex; justify-content:space-around;
+  padding:12px 8px 25px;
+  background:rgba(10,14,21,.96);
+  border-top:1px solid #263142;
+  z-index:1000;
+}
+.nav button {
+  background:transparent; color:#7e8ca0;
+  font-size:12px; padding:8px 18px;
+}
+.nav button.active { color:#3697ff; }
+.nav button span { display:block; font-size:22px; margin-bottom:4px; }
+.view { display:none; }
+.view.active { display:block; }
+.info { color:#8b9bb0; font-size:13px; line-height:1.5; padding:16px; }
+.leaflet-container { background:#172231; }
+</style>
+</head>
+
+<body>
+<header>
+  <div>
+    <div class="brand">MERCEDES-BENZ</div>
+    <div class="subtitle">DIGITAL COCKPIT · W201</div>
+  </div>
+  <div class="status">● CONNECTED</div>
+</header>
+
+<main>
+
+<div id="plan" class="view active">
+  <div class="section">
+    <div class="section-title">Navigation</div>
+    <div class="card">
+      <div id="map"></div>
+      <div class="map-actions">
+        <button onclick="locate()">Ma position</button>
+        <button onclick="openMaps()">Apple Plans ↗</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">À l'écoute</div>
+    <div class="card music">
+      <div class="music-top">
+        <div class="cover">♫</div>
+        <div>
+          <div class="track">Spotify</div>
+          <div class="artist">Ouvre Spotify pour écouter</div>
+        </div>
+      </div>
+      <div class="progress"><span></span></div>
+      <div class="controls">
+        <button onclick="openSpotify()">♫ Spotify ↗</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="musique" class="view">
+  <div class="section-title">Music experience</div>
+  <div class="card music">
+    <div class="music-top">
+      <div class="cover">♫</div>
+      <div>
+        <div class="track">Spotify</div>
+        <div class="artist">Ton univers musical</div>
+      </div>
+    </div>
+    <p class="info">La connexion Spotify et l'affichage des titres seront préparés dans une prochaine étape.</p>
+    <button style="width:100%" onclick="openSpotify()">Ouvrir Spotify ↗</button>
+  </div>
+</div>
+
+<div id="voiture" class="view">
+  <div class="section-title">Your Mercedes</div>
+  <div class="card">
+    <div class="car-area">
+      <svg viewBox="0 0 600 250" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="paint" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#4c776d"/>
+            <stop offset="1" stop-color="#102d29"/>
+          </linearGradient>
+        </defs>
+        <path d="M70 155 L105 120 L165 105 L215 52 L395 52 L465 111 L525 126 L550 163 L540 191 L70 191 Z" fill="url(#paint)" stroke="#91a99f" stroke-width="3"/>
+        <path d="M185 110 L232 65 L383 65 L443 112 Z" fill="#192c38" stroke="#879c9b" stroke-width="3"/>
+        <path d="M310 66 L310 112" stroke="#829a98" stroke-width="3"/>
+        <path d="M90 151 L145 137 L150 162 L87 166 Z" fill="#e9d7a2"/>
+        <path d="M465 137 L522 151 L520 166 L468 160 Z" fill="#e5a66c"/>
+        <path d="M110 190 A37 37 0 0 0 184 190" fill="#090e15"/>
+        <path d="M415 190 A37 37 0 0 0 489 190" fill="#090e15"/>
+        <circle cx="147" cy="190" r="24" fill="#9da8ad" stroke="#303b47" stroke-width="7"/>
+        <circle cx="452" cy="190" r="24" fill="#9da8ad" stroke="#303b47" stroke-width="7"/>
+        <path d="M240 128 L390 128" stroke="#8ca59b" stroke-width="2"/>
+        <path d="M265 139 L265 151 M395 139 L395 151" stroke="#a4b7ad" stroke-width="3"/>
+      </svg>
+    </div>
+    <div class="car-label">190 E · 2.6 · SPORTLINE · 1993</div>
+  </div>
+  <p class="info">Notre modèle 3D interactif sera intégré ici ultérieurement.</p>
+</div>
+
+</main>
+
+<nav class="nav">
+  <button class="active" onclick="showView('plan',this)"><span>⌖</span>Plan</button>
+  <button onclick="showView('musique',this)"><span>♫</span>Musique</button>
+  <button onclick="showView('voiture',this)"><span>🚘</span>Voiture</button>
+</nav>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+let map;
+function initMap() {
+  if(map || !document.getElementById('map')) return;
+  map = L.map('map').setView([49.4944,0.1079],13);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    attribution:'© OpenStreetMap contributors'
+  }).addTo(map);
+}
+function locate() {
+  if(!navigator.geolocation) return alert("Géolocalisation indisponible");
+  navigator.geolocation.getCurrentPosition(pos=>{
+    const p=[pos.coords.latitude,pos.coords.longitude];
+    map.setView(p,16);
+    L.marker(p).addTo(map).bindPopup("Vous êtes ici").openPopup();
+  },()=>alert("Position indisponible. Vérifiez les autorisations."));
+}
+function openMaps() {
+  window.location.href="https://maps.apple.com/";
+}
+function openSpotify() {
+  window.location.href="spotify://";
+  setTimeout(()=>window.open("https://open.spotify.com/","_blank"),1200);
+}
+function showView(id,btn) {
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  if(id==='plan') setTimeout(()=>{initMap();if(map)map.invalidateSize();},100);
+}
+initMap();
+</script>
+</body>
+</html>
