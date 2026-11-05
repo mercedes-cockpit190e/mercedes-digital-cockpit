@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -9,100 +8,60 @@
 <meta name="apple-mobile-web-app-title" content="Mercedes Cockpit">
 <link rel="apple-touch-icon" href="apple-touch-icon.jpg.jpg">
 <title>Mercedes Digital Cockpit</title>
-
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-
 <style>
-* { box-sizing:border-box; }
-body {
-  margin:0;
-  background:#080b11;
-  color:#f5f7fc;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-}
-header {
-  padding:24px 22px 12px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-.brand { font-size:17px; font-weight:700; letter-spacing:2px; }
-.subtitle { color:#78869a; font-size:10px; letter-spacing:2px; margin-top:4px; }
-.status { color:#3995ff; font-size:12px; }
-main { padding:10px 16px 105px; }
-.section { margin-bottom:18px; }
-.section-title {
-  font-size:12px; color:#8b9bb0;
-  letter-spacing:1.5px; margin:0 0 10px 4px;
-  text-transform:uppercase;
-}
-.card {
-  background:linear-gradient(145deg,#171e29,#10151e);
-  border:1px solid #273142;
-  border-radius:20px;
-  overflow:hidden;
-}
-#map { height:290px; width:100%; background:#172231; }
-.map-actions { padding:12px; display:flex; gap:10px; }
-button {
-  border:0; border-radius:12px; padding:13px;
-  background:#1678ed; color:white;
-  font-size:14px; font-weight:600;
-}
-.map-actions button { flex:1; }
-.music { padding:16px; }
-.music-top { display:flex; align-items:center; gap:14px; }
-.cover {
-  width:78px; height:78px; flex-shrink:0;
-  border-radius:13px;
-  background:linear-gradient(140deg,#163b70,#1b1c35 55%,#ec7b81);
-  display:grid; place-items:center; font-size:32px;
-}
-.track { font-size:17px; font-weight:700; }
-.artist { font-size:13px; color:#98a5b6; margin-top:5px; }
-.progress { height:4px; background:#394351; margin:18px 0 8px; border-radius:5px; }
-.progress span { display:block; width:0; height:100%; background:#2589ff; }
-.controls { display:flex; justify-content:center; gap:28px; padding:12px; }
-.controls button { background:#202b3b; min-width:48px; }
-.car-area {
-  min-height:210px; display:grid; place-items:center;
-  background:radial-gradient(ellipse,#263c54 0%,#121b29 48%,#10151e 75%);
-  padding:20px;
-}
-.car-area svg { width:100%; max-width:420px; }
-.car-label { text-align:center; padding:0 12px 18px; color:#a7b5c7; font-size:12px; }
-.nav {
-  position:fixed; bottom:0; left:0; right:0;
-  display:flex; justify-content:space-around;
-  padding:12px 8px 25px;
-  background:rgba(10,14,21,.96);
-  border-top:1px solid #263142;
-  z-index:1000;
-}
-.nav button {
-  background:transparent; color:#7e8ca0;
-  font-size:12px; padding:8px 18px;
-}
-.nav button.active { color:#3697ff; }
-.nav button span { display:block; font-size:22px; margin-bottom:4px; }
-.view { display:none; }
-.view.active { display:block; }
-.info { color:#8b9bb0; font-size:13px; line-height:1.5; padding:16px; }
-.leaflet-container { background:#172231; }
+*{box-sizing:border-box}
+body{margin:0;background:#080b11;color:#f5f7fc;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+header{padding:24px 22px 12px;display:flex;justify-content:space-between;align-items:center}
+.brand{font-size:17px;font-weight:700;letter-spacing:2px}
+.subtitle{color:#78869a;font-size:10px;letter-spacing:2px;margin-top:4px}
+.status{color:#3995ff;font-size:12px}
+main{padding:10px 16px 105px}
+.section{margin-bottom:18px}
+.section-title{font-size:12px;color:#8b9bb0;letter-spacing:1.5px;margin:0 0 10px 4px;text-transform:uppercase}
+.card{background:linear-gradient(145deg,#171e29,#10151e);border:1px solid #273142;border-radius:20px;overflow:hidden}
+#map{height:290px;width:100%;background:#172231}
+.map-actions{padding:12px;display:flex;gap:10px}
+button{border:0;border-radius:12px;padding:13px;background:#1678ed;color:white;font-size:14px;font-weight:600;cursor:pointer}
+button:disabled{opacity:.45;cursor:not-allowed}
+.map-actions button{flex:1}
+.music{padding:16px}
+.music-top{display:flex;align-items:center;gap:14px}
+.cover{width:88px;height:88px;flex-shrink:0;border-radius:13px;background:linear-gradient(140deg,#163b70,#1b1c35 55%,#ec7b81);display:grid;place-items:center;font-size:32px;overflow:hidden}
+.cover img{width:100%;height:100%;object-fit:cover}
+.track{font-size:17px;font-weight:700}
+.artist{font-size:13px;color:#98a5b6;margin-top:5px}
+.music-status{font-size:12px;color:#8b9bb0;line-height:1.5;margin:14px 0 10px}
+.progress-row{display:flex;align-items:center;gap:9px;color:#8b9bb0;font-size:11px}
+.progress{height:5px;background:#394351;margin:12px 0 8px;border-radius:5px;overflow:hidden;flex:1}
+.progress span{display:block;width:0;height:100%;background:#2589ff}
+.controls{display:flex;justify-content:center;align-items:center;gap:12px;padding:12px 0 4px}
+.controls button{background:#202b3b;min-width:48px}
+.controls .play{background:#1678ed;min-width:58px;font-size:18px}
+.spotify-actions{display:flex;gap:9px;margin-top:14px}
+.spotify-actions button{flex:1}
+.secondary{background:#202b3b}
+.small-note{font-size:11px;color:#718096;line-height:1.45;margin-top:12px}
+.car-area{min-height:210px;display:grid;place-items:center;background:radial-gradient(ellipse,#263c54 0%,#121b29 48%,#10151e 75%);padding:20px}
+.car-area svg{width:100%;max-width:420px}
+.car-label{text-align:center;padding:0 12px 18px;color:#a7b5c7;font-size:12px}
+.nav{position:fixed;bottom:0;left:0;right:0;display:flex;justify-content:space-around;padding:12px 8px 25px;background:rgba(10,14,21,.96);border-top:1px solid #263142;z-index:1000}
+.nav button{background:transparent;color:#7e8ca0;font-size:12px;padding:8px 18px}
+.nav button.active{color:#3697ff}
+.nav button span{display:block;font-size:22px;margin-bottom:4px}
+.view{display:none}
+.view.active{display:block}
+.info{color:#8b9bb0;font-size:13px;line-height:1.5;padding:16px}
+.leaflet-container{background:#172231}
 </style>
 </head>
-
 <body>
 <header>
-  <div>
-    <div class="brand">MERCEDES-BENZ</div>
-    <div class="subtitle">DIGITAL COCKPIT · W201</div>
-  </div>
-  <div class="status">● CONNECTED</div>
+  <div><div class="brand">MERCEDES-BENZ</div><div class="subtitle">DIGITAL COCKPIT · W201</div></div>
+  <div class="status" id="connectionStatus">● PRÊT</div>
 </header>
 
 <main>
-
 <div id="plan" class="view active">
   <div class="section">
     <div class="section-title">Navigation</div>
@@ -114,20 +73,16 @@ button {
       </div>
     </div>
   </div>
-
   <div class="section">
     <div class="section-title">À l'écoute</div>
     <div class="card music">
       <div class="music-top">
-        <div class="cover">♫</div>
-        <div>
-          <div class="track">Spotify</div>
-          <div class="artist">Ouvre Spotify pour écouter</div>
-        </div>
+        <div class="cover" id="miniCover">♫</div>
+        <div><div class="track" id="miniTrack">Spotify</div><div class="artist" id="miniArtist">Connecte ton compte pour commencer</div></div>
       </div>
-      <div class="progress"><span></span></div>
+      <div class="music-status" id="miniStatus">Lecteur Spotify non connecté.</div>
       <div class="controls">
-        <button onclick="openSpotify()">♫ Spotify ↗</button>
+        <button onclick="openSpotify()">♫ Ouvrir Spotify ↗</button>
       </div>
     </div>
   </div>
@@ -137,14 +92,24 @@ button {
   <div class="section-title">Music experience</div>
   <div class="card music">
     <div class="music-top">
-      <div class="cover">♫</div>
-      <div>
-        <div class="track">Spotify</div>
-        <div class="artist">Ton univers musical</div>
+      <div class="cover" id="mainCover">♫</div>
+      <div style="min-width:0">
+        <div class="track" id="mainTrack">Mercedes Cockpit</div>
+        <div class="artist" id="mainArtist">Ton univers musical</div>
       </div>
     </div>
-    <p class="info">La connexion Spotify et l'affichage des titres seront préparés dans une prochaine étape.</p>
-    <button style="width:100%" onclick="openSpotify()">Ouvrir Spotify ↗</button>
+    <div class="music-status" id="playerStatus">Connecte Spotify Premium pour afficher le morceau en cours et utiliser les commandes.</div>
+    <div class="progress-row"><span id="currentTime">0:00</span><div class="progress"><span id="progressBar"></span></div><span id="duration">0:00</span></div>
+    <div class="controls">
+      <button id="previousButton" onclick="previousTrack()" disabled>⏮</button>
+      <button id="playButton" class="play" onclick="togglePlayback()" disabled>▶</button>
+      <button id="nextButton" onclick="nextTrack()" disabled>⏭</button>
+    </div>
+    <div class="spotify-actions">
+      <button id="connectButton" onclick="connectSpotify()">Connecter Spotify</button>
+      <button class="secondary" onclick="openSpotify()">Ouvrir Spotify ↗</button>
+    </div>
+    <div class="small-note">Sur iPhone, Spotify peut demander une action manuelle pour démarrer la lecture après le transfert vers le lecteur web. Le compte Premium est nécessaire pour le Web Playback SDK.</div>
   </div>
 </div>
 
@@ -153,30 +118,21 @@ button {
   <div class="card">
     <div class="car-area">
       <svg viewBox="0 0 600 250" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="paint" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stop-color="#4c776d"/>
-            <stop offset="1" stop-color="#102d29"/>
-          </linearGradient>
-        </defs>
+        <defs><linearGradient id="paint" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4c776d"/><stop offset="1" stop-color="#102d29"/></linearGradient></defs>
         <path d="M70 155 L105 120 L165 105 L215 52 L395 52 L465 111 L525 126 L550 163 L540 191 L70 191 Z" fill="url(#paint)" stroke="#91a99f" stroke-width="3"/>
         <path d="M185 110 L232 65 L383 65 L443 112 Z" fill="#192c38" stroke="#879c9b" stroke-width="3"/>
         <path d="M310 66 L310 112" stroke="#829a98" stroke-width="3"/>
         <path d="M90 151 L145 137 L150 162 L87 166 Z" fill="#e9d7a2"/>
         <path d="M465 137 L522 151 L520 166 L468 160 Z" fill="#e5a66c"/>
-        <path d="M110 190 A37 37 0 0 0 184 190" fill="#090e15"/>
-        <path d="M415 190 A37 37 0 0 0 489 190" fill="#090e15"/>
-        <circle cx="147" cy="190" r="24" fill="#9da8ad" stroke="#303b47" stroke-width="7"/>
-        <circle cx="452" cy="190" r="24" fill="#9da8ad" stroke="#303b47" stroke-width="7"/>
-        <path d="M240 128 L390 128" stroke="#8ca59b" stroke-width="2"/>
-        <path d="M265 139 L265 151 M395 139 L395 151" stroke="#a4b7ad" stroke-width="3"/>
+        <path d="M110 190 A37 37 0 0 0 184 190" fill="#090e15"/><path d="M415 190 A37 37 0 0 0 489 190" fill="#090e15"/>
+        <circle cx="147" cy="190" r="24" fill="#9da8ad" stroke="#303b47" stroke-width="7"/><circle cx="452" cy="190" r="24" fill="#9da8ad" stroke="#303b47" stroke-width="7"/>
+        <path d="M240 128 L390 128" stroke="#8ca59b" stroke-width="2"/><path d="M265 139 L265 151 M395 139 L395 151" stroke="#a4b7ad" stroke-width="3"/>
       </svg>
     </div>
     <div class="car-label">190 E · 2.6 · SPORTLINE · 1993</div>
   </div>
   <p class="info">Notre modèle 3D interactif sera intégré ici ultérieurement.</p>
 </div>
-
 </main>
 
 <nav class="nav">
@@ -187,37 +143,256 @@ button {
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
+/* CONFIGURATION SPOTIFY */
+const SPOTIFY_CLIENT_ID = "96b9e4e01fc744a59176fcdbb920d0f8";
+const SPOTIFY_REDIRECT_URI = "https://mercedes-cockpit190e.github.io/mercedes-digital-cockpit/";
+const SPOTIFY_SCOPES = [
+  "streaming",
+  "user-read-email",
+  "user-read-private",
+  "user-read-playback-state",
+  "user-modify-playback-state",
+  "user-read-currently-playing"
+].join(" ");
+
 let map;
-function initMap() {
-  if(map || !document.getElementById('map')) return;
-  map = L.map('map').setView([49.4944,0.1079],13);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-    attribution:'© OpenStreetMap contributors'
-  }).addTo(map);
+let spotifyPlayer = null;
+let spotifyDeviceId = null;
+let spotifyToken = null;
+let spotifyTokenExpiresAt = 0;
+let progressTimer = null;
+let currentTrackDuration = 0;
+let currentPosition = 0;
+let isPlaying = false;
+
+function initMap(){
+  if(map || !document.getElementById('map') || !window.L) return;
+  map=L.map('map').setView([49.4944,0.1079],13);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap contributors'}).addTo(map);
 }
-function locate() {
-  if(!navigator.geolocation) return alert("Géolocalisation indisponible");
+function locate(){
+  if(!navigator.geolocation)return alert("Géolocalisation indisponible");
   navigator.geolocation.getCurrentPosition(pos=>{
     const p=[pos.coords.latitude,pos.coords.longitude];
-    map.setView(p,16);
-    L.marker(p).addTo(map).bindPopup("Vous êtes ici").openPopup();
+    map.setView(p,16);L.marker(p).addTo(map).bindPopup("Vous êtes ici").openPopup();
   },()=>alert("Position indisponible. Vérifiez les autorisations."));
 }
-function openMaps() {
-  window.location.href="https://maps.apple.com/";
-}
-function openSpotify() {
-  window.location.href="spotify://";
-  setTimeout(()=>window.open("https://open.spotify.com/","_blank"),1200);
-}
-function showView(id,btn) {
+function openMaps(){window.location.href="https://maps.apple.com/";}
+function openSpotify(){window.location.href="spotify://";setTimeout(()=>window.open("https://open.spotify.com/","_blank"),1200);}
+function showView(id,btn){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  if(id==='plan') setTimeout(()=>{initMap();if(map)map.invalidateSize();},100);
+  if(id==='plan')setTimeout(()=>{initMap();if(map)map.invalidateSize();},100);
 }
+
+function base64UrlEncode(arrayBuffer){
+  const bytes=new Uint8Array(arrayBuffer);let binary='';
+  bytes.forEach(b=>binary+=String.fromCharCode(b));
+  return btoa(binary).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+}
+function randomString(length=64){
+  const chars='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~';let result='';
+  const random=new Uint8Array(length);crypto.getRandomValues(random);
+  random.forEach(v=>result+=chars[v%chars.length]);return result;
+}
+async function sha256(plain){
+  const encoder=new TextEncoder();
+  return await crypto.subtle.digest('SHA-256',encoder.encode(plain));
+}
+async function connectSpotify(){
+  try{
+    const verifier=randomString(64);
+    const challenge=base64UrlEncode(await sha256(verifier));
+    const state=randomString(24);
+    sessionStorage.setItem('spotify_code_verifier',verifier);
+    sessionStorage.setItem('spotify_auth_state',state);
+    const params=new URLSearchParams({
+      response_type:'code',
+      client_id:SPOTIFY_CLIENT_ID,
+      scope:SPOTIFY_SCOPES,
+      redirect_uri:SPOTIFY_REDIRECT_URI,
+      code_challenge_method:'S256',
+      code_challenge:challenge,
+      state:state
+    });
+    window.location.href='https://accounts.spotify.com/authorize?'+params.toString();
+  }catch(error){
+    setPlayerStatus("Impossible de préparer la connexion sécurisée : "+error.message);
+  }
+}
+async function handleSpotifyCallback(){
+  const params=new URLSearchParams(window.location.search);
+  const code=params.get('code');
+  const returnedState=params.get('state');
+  const error=params.get('error');
+  if(error){setPlayerStatus("Connexion refusée par Spotify : "+error);cleanCallbackUrl();return;}
+  if(!code)return;
+  const expectedState=sessionStorage.getItem('spotify_auth_state');
+  const verifier=sessionStorage.getItem('spotify_code_verifier');
+  if(!verifier || !expectedState || returnedState!==expectedState){
+    setPlayerStatus("La vérification de sécurité a échoué. Recommence la connexion Spotify.");
+    cleanCallbackUrl();return;
+  }
+  try{
+    const body=new URLSearchParams({
+      client_id:SPOTIFY_CLIENT_ID,
+      grant_type:'authorization_code',
+      code:code,
+      redirect_uri:SPOTIFY_REDIRECT_URI,
+      code_verifier:verifier
+    });
+    const response=await fetch('https://accounts.spotify.com/api/token',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body});
+    const data=await response.json();
+    if(!response.ok)throw new Error(data.error_description||data.error||'Échec de récupération du jeton');
+    saveToken(data);
+    sessionStorage.removeItem('spotify_code_verifier');
+    sessionStorage.removeItem('spotify_auth_state');
+    cleanCallbackUrl();
+    await initializeSpotifyPlayer();
+  }catch(err){
+    setPlayerStatus("Erreur de connexion Spotify : "+err.message);
+    cleanCallbackUrl();
+  }
+}
+function cleanCallbackUrl(){history.replaceState({},document.title,SPOTIFY_REDIRECT_URI);}
+function saveToken(data){
+  spotifyToken=data.access_token;
+  spotifyTokenExpiresAt=Date.now()+(data.expires_in||3600)*1000;
+  localStorage.setItem('spotify_access_token',spotifyToken);
+  localStorage.setItem('spotify_token_expiry',String(spotifyTokenExpiresAt));
+  if(data.refresh_token)localStorage.setItem('spotify_refresh_token',data.refresh_token);
+}
+async function getToken(){
+  if(spotifyToken && Date.now()<spotifyTokenExpiresAt-60000)return spotifyToken;
+  const saved=localStorage.getItem('spotify_access_token');
+  const expiry=Number(localStorage.getItem('spotify_token_expiry')||0);
+  if(saved && Date.now()<expiry-60000){spotifyToken=saved;spotifyTokenExpiresAt=expiry;return spotifyToken;}
+  const refresh=localStorage.getItem('spotify_refresh_token');
+  if(!refresh)return null;
+  const response=await fetch('https://accounts.spotify.com/api/token',{
+    method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},
+    body:new URLSearchParams({client_id:SPOTIFY_CLIENT_ID,grant_type:'refresh_token',refresh_token:refresh})
+  });
+  const data=await response.json();
+  if(!response.ok)throw new Error(data.error_description||data.error||'Le renouvellement du jeton a échoué');
+  saveToken(data);return spotifyToken;
+}
+function setPlayerStatus(message){
+  document.getElementById('playerStatus').textContent=message;
+  document.getElementById('miniStatus').textContent=message;
+}
+function formatTime(ms){
+  const seconds=Math.floor((ms||0)/1000);
+  return Math.floor(seconds/60)+':'+String(seconds%60).padStart(2,'0');
+}
+function setCover(elementId,url){
+  const el=document.getElementById(elementId);
+  if(url)el.innerHTML='<img src="'+url.replace(/"/g,'&quot;')+'" alt="Pochette de l’album">';
+  else el.textContent='♫';
+}
+function updateTrack(state){
+  if(!state || !state.track_window || !state.track_window.current_track)return;
+  const track=state.track_window.current_track;
+  const artist=track.artists.map(a=>a.name).join(', ');
+  document.getElementById('mainTrack').textContent=track.name;
+  document.getElementById('mainArtist').textContent=artist;
+  document.getElementById('miniTrack').textContent=track.name;
+  document.getElementById('miniArtist').textContent=artist;
+  const image=track.album.images && track.album.images.length?track.album.images[0].url:null;
+  setCover('mainCover',image);setCover('miniCover',image);
+  currentTrackDuration=state.duration||track.duration_ms||0;
+  currentPosition=state.position||0;
+  isPlaying=!!state.paused===false;
+  document.getElementById('playButton').textContent=isPlaying?'Ⅱ':'▶';
+  document.getElementById('currentTime').textContent=formatTime(currentPosition);
+  document.getElementById('duration').textContent=formatTime(currentTrackDuration);
+  document.getElementById('progressBar').style.width=currentTrackDuration?Math.min(100,currentPosition/currentTrackDuration*100)+'%':'0%';
+}
+function startProgressTimer(){
+  if(progressTimer)clearInterval(progressTimer);
+  progressTimer=setInterval(()=>{
+    if(isPlaying && currentTrackDuration){
+      currentPosition=Math.min(currentTrackDuration,currentPosition+1000);
+      document.getElementById('currentTime').textContent=formatTime(currentPosition);
+      document.getElementById('progressBar').style.width=(currentPosition/currentTrackDuration*100)+'%';
+    }
+  },1000);
+}
+async function spotifyApi(path,options={}){
+  const token=await getToken();
+  if(!token)throw new Error("Connecte d'abord ton compte Spotify.");
+  const response=await fetch('https://api.spotify.com/v1'+path,{
+    ...options,headers:{...(options.headers||{}),Authorization:'Bearer '+token}
+  });
+  if(response.status===204)return null;
+  const data=await response.json().catch(()=>({}));
+  if(!response.ok)throw new Error(data.error?.message||'Erreur Spotify ('+response.status+')');
+  return data;
+}
+async function initializeSpotifyPlayer(){
+  spotifyToken=localStorage.getItem('spotify_access_token');
+  spotifyTokenExpiresAt=Number(localStorage.getItem('spotify_token_expiry')||0);
+  if(!spotifyToken){setPlayerStatus("Connecte ton compte Spotify pour démarrer.");return;}
+  setPlayerStatus("Connexion au lecteur Spotify en cours…");
+  if(!window.Spotify){setPlayerStatus("Le lecteur Spotify n'a pas pu être chargé. Vérifie ta connexion internet puis recharge la page.");return;}
+  if(spotifyPlayer){try{spotifyPlayer.disconnect();}catch(e){}}
+  spotifyPlayer=new Spotify.Player({
+    name:'Mercedes Cockpit',
+    getOAuthToken:async callback=>{
+      try{const token=await getToken();if(token)callback(token);else setPlayerStatus("Reconnecte ton compte Spotify.");}
+      catch(e){setPlayerStatus("Jeton Spotify expiré : "+e.message);}
+    },
+    volume:0.75
+  });
+  spotifyPlayer.addListener('ready',async({device_id})=>{
+    spotifyDeviceId=device_id;
+    document.getElementById('connectionStatus').textContent='● SPOTIFY PRÊT';
+    ['playButton','previousButton','nextButton'].forEach(id=>document.getElementById(id).disabled=false);
+    document.getElementById('connectButton').textContent='Reconnecter Spotify';
+    setPlayerStatus("Lecteur prêt. Dans Spotify, choisis « Mercedes Cockpit » dans la liste des appareils disponibles pour transférer la musique.");
+    try{
+      await spotifyApi('/me/player',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({device_ids:[spotifyDeviceId],play:false})});
+    }catch(e){setPlayerStatus("Lecteur prêt. Ouvre Spotify, sélectionne « Mercedes Cockpit » dans les appareils, puis reviens ici. ("+e.message+")");}
+    try{const state=await spotifyPlayer.getCurrentState();if(state)updateTrack(state);}catch(e){}
+  });
+  spotifyPlayer.addListener('not_ready',()=>{document.getElementById('connectionStatus').textContent='● HORS LIGNE';setPlayerStatus("Le lecteur Spotify est temporairement indisponible.");});
+  spotifyPlayer.addListener('player_state_changed',state=>{if(state){updateTrack(state);setPlayerStatus(isPlaying?"Lecture en cours.":"Lecture en pause.");}});
+  spotifyPlayer.addListener('initialization_error',({message})=>setPlayerStatus("Erreur d'initialisation : "+message));
+  spotifyPlayer.addListener('authentication_error',({message})=>setPlayerStatus("Erreur d'authentification Spotify : "+message));
+  spotifyPlayer.addListener('account_error',({message})=>setPlayerStatus("Le compte Spotify ne permet pas d'utiliser ce lecteur : "+message));
+  spotifyPlayer.addListener('playback_error',({message})=>setPlayerStatus("Erreur de lecture : "+message));
+  const connected=await spotifyPlayer.connect();
+  if(!connected)setPlayerStatus("Impossible de connecter le lecteur. Recharge la page et réessaie.");
+  startProgressTimer();
+}
+async function togglePlayback(){
+  if(!spotifyPlayer)return;
+  try{
+    await spotifyPlayer.activateElement();
+    await spotifyPlayer.togglePlay();
+  }catch(e){setPlayerStatus("Impossible de modifier la lecture : "+e.message);}
+}
+async function nextTrack(){
+  if(!spotifyPlayer)return;
+  try{await spotifyPlayer.nextTrack();}catch(e){setPlayerStatus("Passage au titre suivant impossible : "+e.message);}
+}
+async function previousTrack(){
+  if(!spotifyPlayer)return;
+  try{await spotifyPlayer.previousTrack();}catch(e){setPlayerStatus("Retour au titre précédent impossible : "+e.message);}
+}
+window.onSpotifyWebPlaybackSDKReady=async function(){
+  const returnedWithCode=new URLSearchParams(window.location.search).has('code');
+  await handleSpotifyCallback();
+  if(!returnedWithCode && (localStorage.getItem('spotify_refresh_token') || localStorage.getItem('spotify_access_token'))){
+    try{await initializeSpotifyPlayer();}catch(e){setPlayerStatus("Erreur Spotify : "+e.message);}
+  }else if(!returnedWithCode && !localStorage.getItem('spotify_refresh_token') && !localStorage.getItem('spotify_access_token')){
+    setPlayerStatus("Aucun compte connecté. Appuie sur « Connecter Spotify ».");
+  }
+};
 initMap();
 </script>
+<script src="https://sdk.scdn.co/spotify-player.js"></script>
 </body>
 </html>
